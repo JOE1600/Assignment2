@@ -65,10 +65,6 @@ void Dijkstra(Graph G, int source) {
 }
 
 
-// This will create a graph of the places on the map where user wants to travel with a distance in a day
-
-// post officer 
-// it will calculate the nearest distance with the help of dijikra thing
 
 int main() {
 	Graph G;
@@ -109,3 +105,12 @@ int main() {
 
 	return 0;
 }
+
+
+// This will create a graph of the places on the map where user wants to travel with a distance in a day
+
+// post officer will travel 
+// it will calculate the nearest distance with the help of dijikra thing
+
+
+// i will show how depth first search is not good example to be used for a post man where as he can use Prims algo instead
