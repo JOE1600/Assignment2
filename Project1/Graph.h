@@ -13,10 +13,10 @@ typedef struct edgeNode {
 } EdgeNode;
 
 typedef struct edgeList {
-	EdgeNode* head; // changed EdgeNodePtr to EdgeNode
+	EdgeNode* head;
 } EdgeList;
 
 typedef struct graph {
 	int V;
-	EdgeList* edges; // changed to EdgeList* instead of EdgeList
+	EdgeList* edges;
 } Graph;
