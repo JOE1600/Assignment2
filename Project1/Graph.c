@@ -16,7 +16,7 @@ void Dijkstra(Graph G, int source) {
 	int* Q = (int*)malloc(G.V * sizeof(int)); // Array to store the vertices in the graph
 	int Q_size = G.V;
 
-	// Main loop
+	// Main lop
 	while (Q_size > 0) {
 		// Find the vertex with the minimum distance from the source
 		int min_dist = INT_MAX;
