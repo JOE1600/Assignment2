@@ -105,7 +105,7 @@ int main() {
 
 	return 0;
 }
-
+// need to explain everything in deatail why is this why working with it work this method, and all 
 
 // This will create a graph of the places on the map where user wants to travel with a distance in a day
 
