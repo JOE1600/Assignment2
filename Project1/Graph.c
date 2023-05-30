@@ -16,7 +16,7 @@ void Dijkstra(Graph G, int source) {
 	int* Q = (int*)malloc(G.V * sizeof(int)); // Array to store the vertices in the graph
 	int Q_size = G.V;
 
-	// Main lop
+	// Main loop
 	while (Q_size > 0) {
 		// Find the vertex with the minimum distance from the source
 		int min_dist = INT_MAX;
@@ -66,6 +66,69 @@ void Dijkstra(Graph G, int source) {
 
 
 
+void Prim(Graph G, int source) {
+	int* dist = (int*)malloc(G.V * sizeof(int)); // Array to store the distances from the current solution
+	int* prev = (int*)malloc(G.V * sizeof(int)); // Array to store the previous vertices in the MST
+
+	// Initialization
+	for (int i = 0; i < G.V; i++) {
+		dist[i] = INT_MAX; // Initialize all distances as infinity
+		prev[i] = -1; // Initialize all previous vertices as undefined
+	}
+	dist[source] = 0; // Distance from the source to itself is 0
+
+	int* Q = (int*)malloc(G.V * sizeof(int)); // Array to store the vertices in the graph
+	int Q_size = G.V;
+
+	// Main loop
+	while (Q_size > 0) {
+		// Find the vertex with the minimum distance from the current solution
+		int min_dist = INT_MAX;
+		int u = -1;
+		for (int i = 0; i < G.V; i++) {
+			if (dist[i] < min_dist && Q[i]) {
+				min_dist = dist[i];
+				u = i;
+			}
+		}
+
+		if (u == -1) {
+			// No more reachable vertices
+			break;
+		}
+
+		Q[u] = 0; // Remove the vertex u from Q
+
+		// Update the distances and previous vertices of the neighbors of u
+		EdgeNode* curr = G.edges[u].head;
+		while (curr != NULL) {
+			int v = curr->edge.to_vertex;
+			int weight = curr->edge.weight;
+
+			if (weight < dist[v]) {
+				dist[v] = weight;
+				prev[v] = u;
+			}
+
+			curr = curr->next;
+		}
+
+		Q_size--;
+	}
+
+	// Print the edges in the Minimum Spanning Tree (MST)
+	for (int i = 0; i < G.V; i++) {
+		if (prev[i] != -1) {
+			printf("Edge: %d - %d\n", prev[i], i);
+		}
+	}
+
+	// Clean up memory
+	free(dist);
+	free(prev);
+	free(Q);
+}
+
 int main() {
 	Graph G;
 	scanf_s("%d", &G.V);
@@ -80,7 +143,7 @@ int main() {
 
 		for (int j = 0; j < num_edges; j++) {
 			EdgeNode* new_node = (EdgeNode*)malloc(sizeof(EdgeNode));
-			scanf_s("%d,%d", &new_node->edge.to_vertex, &new_node->edge.weight);
+			scanf_s("%d %d", &new_node->edge.to_vertex, &new_node->edge.weight);
 			new_node->next = G.edges[i].head;
 			G.edges[i].head = new_node;
 		}
@@ -89,22 +152,38 @@ int main() {
 	int source;
 	scanf_s("%d", &source);
 
+	Prim(G, source);
 	Dijkstra(G, source);
 
-	// Clean up memory
 	for (int i = 0; i < G.V; i++) {
 		EdgeNode* curr = G.edges[i].head;
-		while
-			(curr != NULL) {
+		while (curr != NULL) {
 			EdgeNode* next = curr->next;
 			free(curr);
 			curr = next;
 		}
 	}
-	free(G.edges);
 
+	free(G.edges);
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // need to explain everything in deatail why is this why working with it work this method, and all 
 
 // This will create a graph of the places on the map where user wants to travel with a distance in a day
