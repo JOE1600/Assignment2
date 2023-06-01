@@ -13,7 +13,7 @@ void Dijkstra(Graph G, int source) {
 	}
 	dist[source] = 0; // Distance from the source to itself is 0
 
-	int* Q = (int*)malloc(G.V * sizeof(int)); // Array to store the vertices in the graph
+	int* Q = (int*)malloc(G.V * sizeof(int)); // Array to store the vertices in the grap
 	int Q_size = G.V;
 
 	// Main loop
