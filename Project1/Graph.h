@@ -3,7 +3,6 @@
 #include <stdbool.h>
 
 
-
 typedef struct edge {
 	int to_vertex;
 	int weight;
@@ -22,7 +21,6 @@ typedef struct graph {
 	int V;
 	EdgeList* edges;
 } Graph;
-
 
 typedef struct subset {
 	int parent;
