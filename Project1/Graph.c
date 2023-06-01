@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <limits.h>
 #include "Graph.h"
 
 void Dijkstra(Graph G, int source) {
@@ -13,7 +14,7 @@ void Dijkstra(Graph G, int source) {
 	}
 	dist[source] = 0; // Distance from the source to itself is 0
 
-	int* Q = (int*)malloc(G.V * sizeof(int)); // Array to store the vertices in the grap
+	int* Q = (int*)malloc(G.V * sizeof(int)); // Array to store the vertices in the graph
 	int Q_size = G.V;
 
 	// Main loop
@@ -63,8 +64,6 @@ void Dijkstra(Graph G, int source) {
 	free(prev);
 	free(Q);
 }
-
-
 
 void Prim(Graph G, int source) {
 	int* dist = (int*)malloc(G.V * sizeof(int)); // Array to store the distances from the current solution
@@ -117,6 +116,7 @@ void Prim(Graph G, int source) {
 	}
 
 	// Print the edges in the Minimum Spanning Tree (MST)
+	printf("Minimum Spanning Tree using Prim's algorithm:\n");
 	for (int i = 0; i < G.V; i++) {
 		if (prev[i] != -1) {
 			printf("Edge: %d - %d\n", prev[i], i);
@@ -128,23 +128,6 @@ void Prim(Graph G, int source) {
 	free(prev);
 	free(Q);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 Subset* createSubset(int v) {
 	Subset* subset = (Subset*)malloc(v * sizeof(Subset));
@@ -175,9 +158,9 @@ void unionSets(Subset* subset, int x, int y) {
 }
 
 int compareEdges(const void* a, const void* b) {
-	Edge* edgeA = (Edge*)a;
-	Edge* edgeB = (Edge*)b;
-	return edgeA->weight - edgeB->weight;
+    Edge* edgeA = (Edge*)a;
+    Edge* edgeB = (Edge*)b;
+    return edgeA->weight - edgeB->weight;
 }
 
 void kruskalMST(Graph G) {
@@ -205,7 +188,8 @@ void kruskalMST(Graph G) {
 	while (e < V - 1 && i < V * V) {
 		Edge next_edge = edges[i++];
 		int x = find(subset, next_edge.to_vertex);
-		int y = find(subset, next_edge.weight);
+		int y = find(subset, next_edge.to_vertex);
+
 
 		if (x != y) {
 			result[e++] = next_edge;
@@ -223,54 +207,21 @@ void kruskalMST(Graph G) {
 	free(edges);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 int main() {
 	Graph G;
+	printf("Enter the number of houses: ");
 	scanf_s("%d", &G.V);
 
 	G.edges = (EdgeList*)malloc(G.V * sizeof(EdgeList));
 
 	for (int i = 0; i < G.V; i++) {
 		int num_edges;
+		printf("Enter the number of neighbors for house %d: ", i);
 		scanf_s("%d", &num_edges);
 
 		G.edges[i].head = NULL;
 
+		printf("Enter the neighbors and weights for house %d:\n", i);
 		for (int j = 0; j < num_edges; j++) {
 			EdgeNode* new_node = (EdgeNode*)malloc(sizeof(EdgeNode));
 			scanf_s("%d %d", &new_node->edge.to_vertex, &new_node->edge.weight);
@@ -278,14 +229,25 @@ int main() {
 			G.edges[i].head = new_node;
 		}
 	}
-	
+
 	int source;
+	printf("Enter the source house: ");
 	scanf_s("%d", &source);
+
+	// Run Prim's algorithm
+	Prim(G, source);
+
+	// Run Kruskal's algorithm
 	kruskalMST(G);
 
-	Prim(G, source);
-	Dijkstra(G, source);
+	// Calculate the shortest distances between houses using Dijkstra's algorithm
+	for (int i = 0; i < G.V; i++) {
+		if (i != source) {
+			Dijkstra(G, source, i);
+		}
+	}
 
+	// Clean up memory
 	for (int i = 0; i < G.V; i++) {
 		EdgeNode* curr = G.edges[i].head;
 		while (curr != NULL) {
@@ -305,75 +267,3 @@ int main() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-// need to explain everything in deatail why is this why working with it work this method, and all 
-
-// This will create a graph of the places on the map where user wants to travel with a distance in a day
-
-// post officer will travel 
-// it will calculate the nearest distance with the help of dijikra thing
-
-
-// i will show how depth first search is not good example to be used for a post man where as he can use Prims algo instead
-
-
-
-
-/*
-input:
-5 
-2 2 10 3 5 
-3 1 6 4 2 5 8
-2 1 10 4 7
-1 3 2
-2 0
-0
-0
-0
-0
-output:
-	Edge: 1 - 1
-	Edge : 0 - 2
-	Edge : 3 - 3
-	Edge : 1 - 4
-	Distance from 0 to 0 : 0
-	Distance from 0 to 1 : 20
-	Distance from 0 to 2 : 10
-	Distance from 0 to 3 : 5
-	Distance from 0 to 4 : 17
-
-
-	Explanation:
-	This input represents a graph with 5 vertices and the following edges:
-	Vertex 0: Connects to vertex 2 with weight 10 and vertex 3 with weight 5.
-	Vertex 1: Connects to vertex 2 with weight 6, vertex 4 with weight 2, and vertex 5 with weight 8.
-	Vertex 2: Connects to vertex 1 with weight 10 and vertex 4 with weight 7.
-	Vertex 3: Connects to vertex 3 with weight 2.
-	Vertex 4: No outgoing edges.
-
-
-
-*/
-
-
-
-
-
-// need to explain everything in deatail why is this why working with it work this method, and all 
-
-// This will create a graph of the places on the map where user wants to travel with a distance in a day
-
-// post officer will travel 
-// it will calculate the nearest distance with the help of dijikra thing
-
-
-// i will show how depth first search is not good example to be used for a post man where as he can use Prims algo instead
