@@ -22,3 +22,9 @@ typedef struct graph {
 	int V;
 	EdgeList* edges;
 } Graph;
+
+
+typedef struct subset {
+	int parent;
+	int rank;
+} Subset;
