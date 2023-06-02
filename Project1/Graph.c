@@ -152,7 +152,7 @@ void printDistance(int* dist, int V) {
 		printf("%d: %d\n", i, dist[i]);
 	}
 }
-
+// Function to print the shortest paths from source to each vertex
 void printShortestPath(int* parent, int j) {
 	if (parent[j] == -1) {
 		printf("%d ", j);
