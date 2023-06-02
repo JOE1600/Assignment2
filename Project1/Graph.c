@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "Graph.h"
-
+// Function to create a subset for union-find algorithm
 Subset* createSubset(int v) {
 	Subset* subset = (Subset*)malloc((v + 1) * sizeof(Subset));
 	for (int i = 0; i <= v; i++) {
@@ -11,13 +11,13 @@ Subset* createSubset(int v) {
 	}
 	return subset;
 }
-
+// Find operation for union-find algorithm
 int find(Subset* subset, int i) {
 	if (subset[i].parent != i)
 		subset[i].parent = find(subset, subset[i].parent);
 	return subset[i].parent;
 }
-
+// Union operation for union-find algorithm
 void unionSets(Subset* subset, int x, int y) {
 	int xroot = find(subset, x);
 	int yroot = find(subset, y);
@@ -30,13 +30,13 @@ void unionSets(Subset* subset, int x, int y) {
 		subset[xroot].rank++;
 	}
 }
-
+// Comparison function for qsort to compare edges based on weight
 int compareEdges(const void* a, const void* b) {
 	Edge* edgeA = (Edge*)a;
 	Edge* edgeB = (Edge*)b;
 	return edgeA->weight - edgeB->weight;
 }
-
+// Kruskal's algorithm for finding minimum spanning tree
 void kruskalMST(Graph G) {
 	int V = G.V;
 	Edge* result = (Edge*)malloc((V - 1) * sizeof(Edge));
@@ -45,7 +45,7 @@ void kruskalMST(Graph G) {
 
 	Subset* subset = createSubset(V);
 	Edge* edges = (Edge*)malloc(V * V * sizeof(Edge));
-
+	// Collect all edges from the graph
 	for (int v = 0; v < V; v++) {
 		EdgeNode* curr = G.edges[v].head;
 		while (curr != NULL) {
@@ -56,7 +56,7 @@ void kruskalMST(Graph G) {
 			i++;
 		}
 	}
-
+	// Sort the edges based on weight
 	qsort(edges, i, sizeof(Edge), compareEdges);
 
 	i = 0;
@@ -125,7 +125,7 @@ void Prim(Graph G) {
 	free(key);
 	free(inMST);
 }
-
+// Function to add an edge to the graph
 void addEdge(Graph* G, int from_vertex, int to_vertex, int weight) {
 	EdgeNode* newNode = (EdgeNode*)malloc(sizeof(EdgeNode));
 	newNode->edge.to_vertex = to_vertex;
@@ -133,7 +133,7 @@ void addEdge(Graph* G, int from_vertex, int to_vertex, int weight) {
 	newNode->next = G->edges[from_vertex].head;
 	G->edges[from_vertex].head = newNode;
 }
-
+// Function to create a graph with V vertices
 Graph createGraph(int V) {
 	Graph G;
 	G.V = V;
@@ -145,7 +145,7 @@ Graph createGraph(int V) {
 
 	return G;
 }
-
+// Function to print the distances from source to each vertex
 void printDistance(int* dist, int V) {
 	printf("Distance from 0 to:\n");
 	for (int i = 1; i <= V; i++) {
@@ -247,7 +247,7 @@ int main() {
 
 
 
-/* breif description of output and input 
+/* breif description of output and input
 
 
 
@@ -340,25 +340,4 @@ Shortest path from 0 to 2: 0 2
 Shortest path from 0 to 3: 0 3
 Shortest path from 0 to 4: 0 1 4
 Shortest path from 0 to 5: 0 2 1 5
-
-dd
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 */
